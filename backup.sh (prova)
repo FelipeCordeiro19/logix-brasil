@@ -1,0 +1,12 @@
+#!/bin/bash
+# Script de configuracao do servidor Samba — Logix Brasil
+# Idempotente: pode ser executado multiplas vezes com seguranca
+set -e
+sudo apt update && sudo apt install samba -y
+sudo mkdir -p /empresa/{rh,financeiro,ti}
+for grp in grp_rh grp_fin grp_ti; do
+ getent group $grp || sudo groupadd $grp
+done
+sudo chown :grp_rh /empresa/rh && sudo chmod 770 /empresa/rh
+sudo chown :grp_fin /empresa/financeiro && sudo chmod 770 /empresa/financeiro
+sudo chown :grp_ti /empresa/ti && sudo chmod 770 /empresa/ti
